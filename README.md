@@ -82,7 +82,7 @@ Points with no polygons will be placed in their own GeoJSON file, `orphans.geojs
 
     batch-point-in-polygon
 
-## Methods
+## Client-side methods
 
     require('batch-point-polygon')
 
