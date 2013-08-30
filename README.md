@@ -41,7 +41,7 @@ and a list of points, `points.geojson`:
 
 the following command
 
-    node app.js --polygons polygons.geojson --points points.geojson --output output.geojson
+    node batch-point-in-polygon.js --polygons polygons.geojson --points points.geojson --output output.geojson
 
 will assign points to matching polygons, and generate a new GeoJSON file, `output.geojson`:
 
@@ -72,3 +72,5 @@ will assign points to matching polygons, and generate a new GeoJSON file, `outpu
                                 -71.057828,
                                 42.353339
                             ],...
+
+Points with no polygons will be placed in their own GeoJSON file, `orphans.geojson`.
