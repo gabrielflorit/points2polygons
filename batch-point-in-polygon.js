@@ -1,129 +1,53 @@
-var fs = require('fs');
 var _ = require('lodash');
-var argv = require('optimist').argv;
 var inside = require('point-in-polygon');
-var numeral = require('numeral');
-var moment = require('moment');
-var util = require('util');
 
-// from https://github.com/moment/moment/issues/463#issuecomment-16698903
-moment.duration.fn.format = function (input) {
-    var output = input;
-    var milliseconds = this.asMilliseconds();
-    var totalMilliseconds = 0;
-    var replaceRegexps = {
-        years: /Y(?!Y)/g,
-        months: /M(?!M)/g,
-        weeks: /W(?!W)/g,
-        days: /D(?!D)/g,
-        hours: /H(?!H)/g,
-        minutes: /m(?!m)/g,
-        seconds: /s(?!s)/g,
-        milliseconds: /S(?!S)/g
-    }
-    var matchRegexps = {
-        years: /Y/g,
-        months: /M/g,
-        weeks: /W/g,
-        days: /D/g,
-        hours: /H/g,
-        minutes: /m/g,
-        seconds: /s/g,
-        milliseconds: /S/g
-    }
-    for (var r in replaceRegexps) {
-        if (replaceRegexps[r].test(output)) {
-            var as = 'as'+r.charAt(0).toUpperCase() + r.slice(1);
-            var value = new String(Math.floor(moment.duration(milliseconds - totalMilliseconds)[as]()));
-            var replacements = output.match(matchRegexps[r]).length - value.length;
-            output = output.replace(replaceRegexps[r], value);
+var batch = function(polygons, points, showProgress) {
 
-            while (replacements > 0 && replaceRegexps[r].test(output)) {
-                output = output.replace(replaceRegexps[r], '0');
-                replacements--;
-            }
-            output = output.replace(matchRegexps[r], '');
+	var insidePointsCount = 0;
+	var orphans = [];
 
-            var temp = {};
-            temp[r] = value;
-            totalMilliseconds += moment.duration(temp).asMilliseconds();
-        }
-    }
-    return output;
-}
+	var start = Date.now();
 
-var polygonsFile = fs.readFileSync(argv.polygons, 'utf8');
-var pointsFile = fs.readFileSync(argv.points, 'utf8');
+	// for each point,
+	_.each(points.features, function(point, i, array) {
 
-var polygons = JSON.parse(polygonsFile);
-var points = JSON.parse(pointsFile);
+		var found = false;
 
-var polygonCount = polygons.features.length;
-var pointCount = points.features.length;
+		// for each polygon,
+		_.each(polygons.features, function(polygon) {
 
-var start = Date.now();
-var insidePoints = 0;
+			// if the point is inside this polygon, add it
+			if (!found && inside(point.geometry.coordinates, polygon.geometry.coordinates[0])) {
 
-var orphanPoints = [];
+				found = true;
 
-// for each point,
-_(points.features)
-.each(function(point, i, array) {
+				if (!polygon.properties.points) {
+					polygon.properties.points = [];
+				}
 
-	var found = false;
+				polygon.properties.points.push(point);
+				insidePointsCount++;
 
-	// for each polygon,
-	_.each(polygons.features, function(polygon) {
-
-		// if the point is inside this polygon, add it
-		if (!found && inside(point.geometry.coordinates, polygon.geometry.coordinates[0])) {
-
-			found = true;
-
-			if (!polygon.properties.points) {
-				polygon.properties.points = [];
 			}
 
-			polygon.properties.points.push(point);
-			insidePoints++;
+		});
 
+		// if we didn't find a polygon for this point, add it to an array
+		// we'll use it to create orphans.geojson
+		if (!found) {
+			orphans.push(point);
 		}
+
+		// if defined, show progress
+		showProgress && showProgress(i + 1);
 
 	});
 
-    // if we didn't find a polygon for this point, add it to an array
-    // we'll use it to create orphans.geojson
-    if (!found) {
-        orphanPoints.push(point);
-    }
+	return {
+		polygons: polygons,
+		orphans: orphans
+	};
 
-	if (i % 100 == 0 || i === array.length - 1) {
-		var now = Date.now();
-		var pointsProcessed = i + 1;
-		var pointsLeft = pointCount - pointsProcessed;
-		var timeTaken = now - start;
-		var timeLeft = (timeTaken/pointsProcessed) * pointsLeft;
-		util.print('\r\033[KPoints in polygons: ' + numeral(insidePoints).format('0, 0') + '   Points processed: ' + numeral(pointsProcessed).format('0,0') + '   Points left: ' + numeral(pointsLeft).format('0,0') + '   Time left: ' + moment.duration(timeLeft).format('HH:mm:ss'));
-	}
+};
 
-});
-
-util.print('\nWriting to ' + argv.output + '...');
-fs.writeFileSync(argv.output, JSON.stringify(polygons, null, 4));
-util.print(' Done.');
-
-if (orphanPoints.length) {
-
-    // now make orphans.geojson
-    var orphansJson = {
-        type: 'FeatureCollection',
-        features: orphanPoints
-    };
-
-    var orphansFileName = 'orphans.geojson';
-
-    util.print('\nThere are 12 points with no polygons. Writing to ' + orphansFileName + '...');
-    fs.writeFileSync(orphansFileName, JSON.stringify(orphansJson, null, 4));
-    util.print(' Done.\n');
-
-}
+module.exports.batch = batch;

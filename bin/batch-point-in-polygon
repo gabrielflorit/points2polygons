@@ -1,0 +1,67 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var optimist = require('optimist');
+var numeral = require('numeral');
+var util = require('util');
+var batchPointInPolygon = require('../batch-point-in-polygon.js');
+
+var argv = optimist
+	.usage('Batch point-in-polygon operations. Creates a GeoJSON file of polygons containing points.\nUsage: $0')
+	.options('y', {
+		demand: true,
+		alias: 'polygons',
+		describe: 'a GeoJSON file of polygons'
+	})
+	.options('t', {
+		demand: true,
+		alias: 'points',
+		describe: 'a GeoJSON file of points'
+	})
+	.options('o', {
+		demand: false,
+		alias: 'output',
+		default: 'output.json',
+		describe: 'a GeoJSON file of polygons containing points'
+	})
+	.argv;
+
+var polygonsFile = fs.readFileSync(argv.polygons, 'utf8');
+var pointsFile = fs.readFileSync(argv.points, 'utf8');
+
+var polygons = JSON.parse(polygonsFile);
+var points = JSON.parse(pointsFile);
+
+// tell pace how many elements we're going to process
+var pace = require('pace')({
+	total: points.features.length,
+	itemType: 'points'
+});
+
+function showProgress(elementsProcessed) {
+	pace.op(elementsProcessed);
+}
+
+// batch away
+var results = batchPointInPolygon.batch(polygons, points, showProgress);
+
+// create a new polygon GeoJSON file
+util.print('\nWriting to ' + argv.output + '...');
+fs.writeFileSync(argv.output, JSON.stringify(results.polygons, null, 4));
+util.print(' Done.');
+
+if (results.orphans.length) {
+
+	// now make orphans.geojson
+	var orphansJson = {
+		type: 'FeatureCollection',
+		features: results.orphans
+	};
+
+	var orphansFileName = 'orphans.geojson';
+
+	util.print('\nThere are ' + numeral(results.orphans.length).format('0, 0') + ' points with no polygons. Writing to ' + orphansFileName + '...');
+	fs.writeFileSync(orphansFileName, JSON.stringify(orphansJson, null, 4));
+	util.print(' Done.\n');
+
+}
