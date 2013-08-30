@@ -5,7 +5,7 @@
   "main": "batch-point-in-polygon.js",
   "repository": "https://github.com/gabrielflorit/batch-point-in-polygon.git",
   "author": "Gabriel Florit",
-  "license": "BSD",
+  "license": "GPL",
   "dependencies": {
     "lodash": "*",
     "optimist": "*",
