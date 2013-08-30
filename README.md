@@ -9,64 +9,70 @@ If found, the point will be added to the polygon.
 
 Given a list of polygons, `polygons.geojson`:
 
-    {
-        "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [
+```javascript
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
                         [
-                            [
-                                -71.057828,
-                                42.353339
-                            ],...
+                            -71.057828,
+                            42.353339
+                        ],...
+```
 
 and a list of points, `points.geojson`:
 
-    {
-        "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -71.057961,
-                        42.352929
-                    ]
-                },...
+```javascript
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -71.057961,
+                    42.352929
+                ]
+            },...
+```
 
 `batch-point-in-polygon` will assign points to matching polygons, and generate a new GeoJSON file, `output.geojson`:
 
-    {
-        "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "properties": {
-                    "points": [
-                        {
-                            "type": "Feature",
-                            "geometry": {
-                                "type": "Point",
-                                "coordinates": [
-                                    -71.057961,
-                                    42.352929
-                                ]
-                            }
+```javascript
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "points": [
+                    {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [
+                                -71.057961,
+                                42.352929
+                            ]
                         }
-                    ]
-                },
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [
+                    }
+                ]
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
                         [
-                            [
-                                -71.057828,
-                                42.353339
-                            ],...
+                            -71.057828,
+                            42.353339
+                        ],...
+```
 
 Points with no polygons will be placed in their own GeoJSON file, `orphans.geojson`.
 
