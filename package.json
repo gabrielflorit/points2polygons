@@ -1,0 +1,16 @@
+{
+  "name": "gabriel",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app.js",
+  "repository": "",
+  "author": "Gabriel Florit",
+  "license": "BSD",
+  "dependencies": {
+    "lodash": "*",
+    "optimist": "*",
+    "point-in-polygon": "*",
+    "numeral": "*",
+    "moment": "*"
+  }
+}
