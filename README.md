@@ -1,9 +1,10 @@
 batch-point-in-polygon
 ===============
 
-Given a list of polygons and points, batch-point-in-polygon will determine if each point is inside a polygon.
+Given a list of polygons and points, batch-point-in-polygon will determine if each point is inside a polygon, using [point-in-polygon](https://github.com/substack/point-in-polygon).
 
 If found, the point will be added to the polygon.
+
 
 
 ### example:

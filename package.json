@@ -1,7 +1,7 @@
 {
   "name": "batch-point-in-polygon",
   "version": "0.0.1",
-  "description": "Given a list of polygons and points, batch-point-in-polygon will determine if each point is inside a polygon. If found, the point will be added to the polygon.",
+  "description": "batch point-in-polygon operations on GeoJSON files",
   "main": "batch-point-in-polygon.js",
   "repository": "",
   "author": "Gabriel Florit",
