@@ -38,11 +38,7 @@ and a list of points, `points.geojson`:
                     ]
                 },...
 
-the following command
-
-    batch-point-in-polygon --polygons polygons.geojson --points points.geojson --output output.geojson
-
-will assign points to matching polygons, and generate a new GeoJSON file, `output.geojson`:
+`batch-point-in-polygon` will assign points to matching polygons, and generate a new GeoJSON file, `output.geojson`:
 
     {
         "type": "FeatureCollection",
@@ -78,11 +74,11 @@ Points with no polygons will be placed in their own GeoJSON file, `orphans.geojs
 
     npm install batch-point-in-polygon
 
-## Command-line usage
+## Using it as a console utility
 
-    batch-point-in-polygon
+    -> batch-point-in-polygon --polygons polygons.json --points points.json --output output.json
 
-## Client-side methods
+## Using it as a library
 
     require('batch-point-polygon')
 
