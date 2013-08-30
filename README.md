@@ -7,7 +7,7 @@ If found, the point will be added to the polygon.
 
 
 
-### example:
+### In other words,
 
 Given a list of polygons, `polygons.geojson`:
 
