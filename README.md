@@ -5,13 +5,6 @@ Given a list of polygons and points, batch-point-in-polygon will determine if ea
 
 If found, the point will be added to the polygon.
 
-
-### Command-line    
-
-
-
-
-
 ### For example:
 
 Given a list of polygons, `polygons.geojson`:
@@ -83,7 +76,15 @@ Points with no polygons will be placed in their own GeoJSON file, `orphans.geojs
 
 ## Installation
 
+    npm install batch-point-in-polygon
+
+## Command-line usage
+
+    batch-point-in-polygon
+
 ## Methods
+
+    require('batch-point-polygon')
 
 ### .batch(polygons, points, showProgress)
 
@@ -94,30 +95,4 @@ Points with no polygons will be placed in their own GeoJSON file, `orphans.geojs
 Returns an object with two properties:
 
 * `polygons`: same as input, but each polygon has a `points` property containing corresponding points.
-* `orphans`: a GeoJSON object containing points with no polygons. 
-
-## Command-line usage
-
-First, install:
-
-    npm install batch-point-in-polygon
-    
-Usage: batch-point-in-polygon
-
-Options:
-
-    -y, --polygons  a GeoJSON file of polygons                    [required]
-    -t, --points    a GeoJSON file of points                      [required]
-    -o, --output    a GeoJSON file of polygons containing points  [default: "output.json"]
-
-
-
-
-
-
-
-
-
-
-
-
+* `orphans`: a GeoJSON object containing points with no polygons.
