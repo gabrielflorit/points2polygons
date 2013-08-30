@@ -4,7 +4,9 @@ var argv = require('optimist').argv;
 var inside = require('point-in-polygon');
 var numeral = require('numeral');
 var moment = require('moment');
+var util = require('util');
 
+// from https://github.com/moment/moment/issues/463#issuecomment-16698903
 moment.duration.fn.format = function (input) {
     var output = input;
     var milliseconds = this.asMilliseconds();
@@ -93,11 +95,15 @@ _(points.features)
 		var pointsLeft = pointCount - pointsProcessed;
 		var timeTaken = now - start;
 		var timeLeft = (timeTaken/pointsProcessed) * pointsLeft;
-		console.log('Inside points: ' + numeral(insidePoints).format('0, 0') + '   Points processed: ' + numeral(pointsProcessed).format('0,0') + '   Points left: ' + numeral(pointsLeft).format('0,0') + '   Time left: ' + moment.duration(timeLeft).format('HH:mm:ss'));
+		util.print('\r\033[KInside points: ' + numeral(insidePoints).format('0, 0') + '   Points processed: ' + numeral(pointsProcessed).format('0,0') + '   Points left: ' + numeral(pointsLeft).format('0,0') + '   Time left: ' + moment.duration(timeLeft).format('HH:mm:ss'));
 	}
 
 });
 
-console.log('Writing to ' + argv.output);
+console.log('\nWriting to ' + argv.output);
 fs.writeFileSync(argv.output, JSON.stringify(polygons, null, 4));
 fs.writeFileSync('duplicates.geojson', JSON.stringify(points, null, 4));
+
+
+
+
