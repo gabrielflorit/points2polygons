@@ -64,6 +64,8 @@ var pointCount = points.features.length;
 var start = Date.now();
 var insidePoints = 0;
 
+var orphanPoints = [];
+
 // for each point,
 _(points.features)
 .each(function(point, i, array) {
@@ -89,21 +91,39 @@ _(points.features)
 
 	});
 
+    // if we didn't find a polygon for this point, add it to an array
+    // we'll use it to create orphans.geojson
+    if (!found) {
+        orphanPoints.push(point);
+    }
+
 	if (i % 100 == 0 || i === array.length - 1) {
 		var now = Date.now();
 		var pointsProcessed = i + 1;
 		var pointsLeft = pointCount - pointsProcessed;
 		var timeTaken = now - start;
 		var timeLeft = (timeTaken/pointsProcessed) * pointsLeft;
-		util.print('\r\033[KInside points: ' + numeral(insidePoints).format('0, 0') + '   Points processed: ' + numeral(pointsProcessed).format('0,0') + '   Points left: ' + numeral(pointsLeft).format('0,0') + '   Time left: ' + moment.duration(timeLeft).format('HH:mm:ss'));
+		util.print('\r\033[KPoints in polygons: ' + numeral(insidePoints).format('0, 0') + '   Points processed: ' + numeral(pointsProcessed).format('0,0') + '   Points left: ' + numeral(pointsLeft).format('0,0') + '   Time left: ' + moment.duration(timeLeft).format('HH:mm:ss'));
 	}
 
 });
 
-console.log('\nWriting to ' + argv.output);
+util.print('\nWriting to ' + argv.output + '...');
 fs.writeFileSync(argv.output, JSON.stringify(polygons, null, 4));
-fs.writeFileSync('duplicates.geojson', JSON.stringify(points, null, 4));
+util.print(' Done.');
 
+if (orphanPoints.length) {
 
+    // now make orphans.geojson
+    var orphansJson = {
+        type: 'FeatureCollection',
+        features: orphanPoints
+    };
 
+    var orphansFileName = 'orphans.geojson';
 
+    util.print('\nThere are 12 points with no polygons. Writing to ' + orphansFileName + '...');
+    fs.writeFileSync(orphansFileName, JSON.stringify(orphansJson, null, 4));
+    util.print(' Done.\n');
+
+}
