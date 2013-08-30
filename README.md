@@ -42,7 +42,7 @@ and a list of points, `points.geojson`:
 
 the following command
 
-    node batch-point-in-polygon.js --polygons polygons.geojson --points points.geojson --output output.geojson
+    batch-point-in-polygon --polygons polygons.geojson --points points.geojson --output output.geojson
 
 will assign points to matching polygons, and generate a new GeoJSON file, `output.geojson`:
 
