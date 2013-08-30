@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "batch point-in-polygon operations on GeoJSON files",
   "main": "batch-point-in-polygon.js",
-  "repository": "",
+  "repository": "https://github.com/gabrielflorit/batch-point-in-polygon.git",
   "author": "Gabriel Florit",
   "license": "BSD",
   "dependencies": {
