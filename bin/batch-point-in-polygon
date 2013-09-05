@@ -48,7 +48,7 @@ var results = batchPointInPolygon.batch(polygons, points, showProgress);
 // create a new polygon GeoJSON file
 util.print('\nWriting to ' + argv.output + '...');
 fs.writeFileSync(argv.output, JSON.stringify(results.polygons, null, 4));
-util.print(' Done.');
+util.print(' Done.\n');
 
 if (results.orphans.length) {
 
@@ -60,7 +60,7 @@ if (results.orphans.length) {
 
 	var orphansFileName = 'orphans.geojson';
 
-	util.print('\nThere are ' + numeral(results.orphans.length).format('0, 0') + ' points with no polygons. Writing to ' + orphansFileName + '...');
+	util.print('There are ' + numeral(results.orphans.length).format('0, 0') + ' points with no polygons. Writing to ' + orphansFileName + '...');
 	fs.writeFileSync(orphansFileName, JSON.stringify(orphansJson, null, 4));
 	util.print(' Done.\n');
 
