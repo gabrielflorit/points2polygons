@@ -24,6 +24,12 @@ var argv = optimist
 		default: 'output.json',
 		describe: 'a GeoJSON file of polygons containing points'
 	})
+	.options('f', {
+		demand: false,
+		alias: 'countByField',
+		default: null,
+		describe: 'aggregate points by count, if present'
+	})
 	.argv;
 
 var polygonsFile = fs.readFileSync(argv.polygons, 'utf8');
@@ -43,7 +49,7 @@ function showProgress(elementsProcessed) {
 }
 
 // batch away
-var results = batchPointInPolygon.batch(polygons, points, showProgress);
+var results = batchPointInPolygon.batch(polygons, points, showProgress, argv.countByField);
 
 // create a new polygon GeoJSON file
 util.print('\nWriting to ' + argv.output + '...');

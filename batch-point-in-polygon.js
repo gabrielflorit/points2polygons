@@ -1,6 +1,7 @@
 var inside = require('point-in-polygon');
+var _ = require('lodash');
 
-var batch = function(polygons, points, showProgress) {
+var batch = function(polygons, points, showProgress, countByField) {
 
 	var insidePointsCount = 0;
 	var orphans = [];
@@ -72,6 +73,43 @@ var batch = function(polygons, points, showProgress) {
 		showProgress && showProgress(i + 1);
 
 	});
+
+	if (countByField) {
+
+		polygons.features.forEach(function(polygon) {
+
+			// get points
+			var points = polygon.properties.points;
+			if (points) {
+
+				var properties = _(points)
+					.pluck('properties')
+					.map(function(v, i) {
+
+						var items = _(v)
+						.filter(function(v, i) {
+							return i.toLowerCase() == countByField.toLowerCase();
+						})
+						.value();
+
+						return items;
+
+					})
+					.flatten()
+					.countBy(function(v, i) {
+						return v;
+					})
+					.value();
+
+				_.assign(polygon.properties, properties);
+
+				delete polygon.properties.points;
+
+			}
+
+		});
+
+	}
 
 	return {
 		polygons: polygons,
