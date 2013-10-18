@@ -76,11 +76,26 @@ Points with no polygons will be placed in their own GeoJSON file, `orphans.geojs
 
 ## Using it as a console utility
 
-    -> points2polygons --polygons polygons.json --points points.json --output output.json
+```
+➜ points2polygons
+Batch point-in-polygon operations. Creates a GeoJSON file of polygons containing points.
+Usage: points2polygons
+
+Options:
+  -y, --polygons   a GeoJSON file of polygons                       [required]
+  -t, --points     a CSV file of points                             [required]
+  -i, --latitude   latitude field                                   [default: "latitude"]
+  -e, --longitude  longitude field                                  [default: "longitude"]
+  -d, --delimiter  delimiter character                              [default: ","]
+  -o, --output     a GeoJSON file of polygons containing points     [default: "output.json"]
+  -c, --countBy    aggregate points by count - group by this field  [default: null]
+  -g, --groupBy    aggregate points by sum - group by this field    [default: null]
+  -s, --sumBy      aggregate points by sum - sum by this field      [default: null]
+```
 
 ## Using it as a library
 
-    require('batch-point-polygon')
+    require('points2polygons')
 
 ### .batch(polygons, points, showProgress)
 
