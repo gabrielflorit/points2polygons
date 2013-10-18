@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/gabrielflorit/batch-point-in-polygon.png)](https://travis-ci.org/gabrielflorit/batch-point-in-polygon)
-
 batch-point-in-polygon
 ===============
 
