@@ -20,17 +20,15 @@ Given a list of polygons, `polygons.geojson`:
                 "type": "Polygon",
                 "coordinates": [
                     [
-                        [
-                            -71.057828,
-                            42.353339
-                        ],...
+                        [0,0],
+                        ...
 ```
 
 and a list of points, `points.csv`:
 
 ```
 town,lat,lon
-Boston,42.358431,-71.059773
+Dreamland,1,1
 ```
 
 **points2polygons** will assign points to matching polygons, and generate a new GeoJSON file, `output.geojson`:
@@ -46,14 +44,11 @@ Boston,42.358431,-71.059773
                     {
                         "type": "Feature",
                         "properties": {
-                            "town": "Boston"
+                            "town": "Dreamland"
                         }
                         "geometry": {
                             "type": "Point",
-                            "coordinates": [
-                                -71.059773,
-                                42.358431
-                            ]
+                            "coordinates": [1,1]
                         }
                     }
                 ]
@@ -62,10 +57,8 @@ Boston,42.358431,-71.059773
                 "type": "Polygon",
                 "coordinates": [
                     [
-                        [
-                            -71.057828,
-                            42.353339
-                        ],...
+                        [0,0],
+                        ...
 ```
 
 Points with no polygons will be placed in their own GeoJSON file, `orphans.geojson`.
