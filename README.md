@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/gabrielflorit/batch-point-in-polygon.png)](https://travis-ci.org/gabrielflorit/batch-point-in-polygon)
-batch-point-in-polygon
+[![Build Status](https://travis-ci.org/gabrielflorit/points2polygons.png)](https://travis-ci.org/gabrielflorit/points2polygons)
+points2polygons
 ===============
 
-Given a list of polygons and points, batch-point-in-polygon will determine if each point is inside a polygon, using [point-in-polygon](https://github.com/substack/point-in-polygon).
+Given a list of polygons and points, points2polygons will determine if each point is inside a polygon, using [point-in-polygon](https://github.com/substack/point-in-polygon).
 
 If found, the point will be added to the polygon.
 
@@ -79,7 +79,7 @@ Points with no polygons will be placed in their own GeoJSON file, `orphans.geojs
 
 ## Installation
 
-    npm install batch-point-in-polygon
+    npm install points2polygons
 
 ## Using it as a console utility
 
