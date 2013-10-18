@@ -4,7 +4,7 @@ var fs = require('fs');
 var optimist = require('optimist');
 var numeral = require('numeral');
 var util = require('util');
-var batchPointInPolygon = require('../batch-point-in-polygon.js');
+var points2polygons = require('../points2polygons.js');
 var d3 = require('d3');
 var csv2geojson = require('csv2geojson');
 var _ = require('lodash');
@@ -100,8 +100,7 @@ csv2geojson.csv2geojson(json, {
 		pace.op(elementsProcessed);
 	}
 
-	// batch away
-	var results = batchPointInPolygon.batch(polygons, points, showProgress, argv.countBy, argv.groupBy, argv.sumBy);
+	var results = points2polygons.batch(polygons, points, showProgress, argv.countBy, argv.groupBy, argv.sumBy);
 
 	// create a new polygon GeoJSON file
 	util.print('\nWriting to ' + argv.output + '...');

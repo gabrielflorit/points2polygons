@@ -1,11 +1,11 @@
 {
-  "name": "batch-point-in-polygon",
-  "version": "0.0.5",
+  "name": "points2polygons",
+  "version": "0.0.6",
   "description": "batch point-in-polygon operations on GeoJSON files",
-  "main": "batch-point-in-polygon.js",
-  "repository": "https://github.com/gabrielflorit/batch-point-in-polygon.git",
+  "main": "points2polygons.js",
+  "repository": "https://github.com/gabrielflorit/points2polygons.git",
   "bin": {
-    "batch-point-in-polygon": "./bin/batch-point-in-polygon"
+    "points2polygons": "./bin/points2polygons"
   },
   "author": "Gabriel Florit",
   "license": "MIT",
