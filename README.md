@@ -28,8 +28,8 @@ Given a list of polygons, `polygons.geojson`:
 and a list of points, `points.csv`:
 
 ```
-address,lat,lon
-111 Point Lane,1,1
+address,        lat, lon
+111 Point Lane, 1,   1
 ```
 
 `points2polygons` will assign points to matching polygons, and generate a new GeoJSON file, `output.geojson`:
@@ -84,10 +84,10 @@ Points with no polygons will be placed in their own GeoJSON file, `orphans.geojs
 and `houses.csv`:
 
 ```
-address,color,value,latitude,longitude
-111 Point Lane,red,100,1,1
-222 Point Lane,green,200,2,2
-333 Point Lane,red,300,3,3
+address,        color, value, latitude, longitude
+111 Point Lane, red,   100,   1,        1
+222 Point Lane, green, 200,   2,        2
+333 Point Lane, red,   300,   3,        3
 ```
 
 Running `points2polygons --polygons town.geojson --points houses.csv` will correctly place the houses in our town, and generate something like this:
