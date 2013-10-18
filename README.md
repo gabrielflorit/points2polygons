@@ -32,7 +32,7 @@ address,        lat, lon
 111 Point Lane, 1,   1
 ```
 
-`points2polygons` will assign points to matching polygons, and generate a new GeoJSON file, `output.geojson`:
+`points2polygons` will assign points to matching polygons, and generate a new GeoJSON file:
 
 ```javascript
 {
