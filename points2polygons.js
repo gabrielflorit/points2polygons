@@ -1,7 +1,7 @@
 var inside = require('point-in-polygon');
 var _ = require('lodash');
 
-var batch = function(_polygons, points, showProgress, count, groupBy, sum) {
+var batch = function(_polygons, _points, showProgress, _count, _groupBy, _sum) {
 
 	var polygons = _.cloneDeep(_polygons);
 
@@ -9,7 +9,7 @@ var batch = function(_polygons, points, showProgress, count, groupBy, sum) {
 	var orphans = [];
 
 	// for each point,
-	points.features.forEach(function(point, i, array) {
+	_points.features.forEach(function(point, i, array) {
 
 		var found = false;
 
@@ -76,7 +76,7 @@ var batch = function(_polygons, points, showProgress, count, groupBy, sum) {
 
 	});
 
-	if (count) {
+	if (_count) {
 
 		polygons.features.forEach(function(polygon) {
 
@@ -90,7 +90,7 @@ var batch = function(_polygons, points, showProgress, count, groupBy, sum) {
 
 						var items = _(v)
 						.filter(function(v, i) {
-							return i.toLowerCase() == count.toLowerCase();
+							return i.toLowerCase() == _count.toLowerCase();
 						})
 						.value();
 
@@ -111,7 +111,7 @@ var batch = function(_polygons, points, showProgress, count, groupBy, sum) {
 
 		});
 
-	} else if (groupBy && sum) {
+	} else if (_groupBy && _sum) {
 
 		polygons.features.forEach(function(polygon) {
 
@@ -124,13 +124,13 @@ var batch = function(_polygons, points, showProgress, count, groupBy, sum) {
 				_(points)
 					.pluck('properties')
 					.groupBy(function(v, i) {
-						return v[groupBy];
+						return v[_groupBy];
 					})
 					.each(function(v, i) {
 
 						var sum = _(v)
 							.map(function(v, i) {
-								return Number(v[sum]);
+								return Number(v[_sum]);
 							})
 							.reduce(function(a, b) {
 								return a + b;
