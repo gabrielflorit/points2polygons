@@ -97,11 +97,14 @@ Options:
 
     require('points2polygons')
 
-### .batch(polygons, points, showProgress)
+### .batch(polygons, points, showProgress, countBy, groupBy, sumBy)
 
 * `polygons`: (required) a GeoJSON object of polygons.
 * `points`: (required) a GeoJSON object of points.
 * `showProgress`: (optional) a callback that gets fired per point processed, and receives the current point index.
+* `countBy`: (optional) if provided, will aggregate points by count for this field. See example.
+* `groupBy`: (optional) if provided, will aggregate points by sum, grouping by this field. See example.
+* `sumBy`: (optional) if provided, will aggregate points by sum, summing by this field. See example.
  
 Returns an object with two properties:
 
