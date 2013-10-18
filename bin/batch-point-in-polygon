@@ -6,6 +6,8 @@ var numeral = require('numeral');
 var util = require('util');
 var batchPointInPolygon = require('../batch-point-in-polygon.js');
 var d3 = require('d3');
+var csv2geojson = require('csv2geojson');
+var _ = require('lodash');
 
 var argv = optimist
 	.usage('Batch point-in-polygon operations. Creates a GeoJSON file of polygons containing points.\nUsage: $0')
@@ -19,6 +21,24 @@ var argv = optimist
 		alias: 'points',
 		describe: 'a CSV file of points'
 	})
+	.options('i', {
+		demand: false,
+		alias: 'latitude',
+		describe: 'latitude field',
+		default: 'latitude'
+	})
+	.options('e', {
+		demand: false,
+		alias: 'longitude',
+		describe: 'longitude field',
+		default: 'longitude'
+	})
+	.options('d', {
+		demand: false,
+		alias: 'delimiter',
+		describe: 'delimiter character',
+		default: ','
+	})
 	.options('o', {
 		demand: false,
 		alias: 'output',
@@ -27,19 +47,19 @@ var argv = optimist
 	})
 	.options('c', {
 		demand: false,
-		alias: 'countByField',
+		alias: 'countBy',
 		default: null,
 		describe: 'aggregate points by count - group by this field'
 	})
 	.options('g', {
 		demand: false,
-		alias: 'groupByField',
+		alias: 'groupBy',
 		default: null,
 		describe: 'aggregate points by sum - group by this field'
 	})
 	.options('s', {
 		demand: false,
-		alias: 'sumField',
+		alias: 'sumBy',
 		default: null,
 		describe: 'aggregate points by sum - sum by this field'
 	})
@@ -49,38 +69,59 @@ var polygonsFile = fs.readFileSync(argv.polygons, 'utf8');
 var pointsFile = fs.readFileSync(argv.points, 'utf8');
 
 var polygons = JSON.parse(polygonsFile);
-var points = d3.csv.parse(pointsFile);
 
-// tell pace how many elements we're going to process
-var pace = require('pace')({
-	total: points.features.length,
-	itemType: 'points'
-});
+var json = d3.csv.parse(pointsFile);
 
-function showProgress(elementsProcessed) {
-	pace.op(elementsProcessed);
+// check that lat and lon params are in key
+var keys = _.keys(json[0]);
+if (!_.contains(keys, argv.latitude)) {
+	console.log('Please specify the correct latitude field.');
+	process.exit(0);
 }
 
-// batch away
-var results = batchPointInPolygon.batch(polygons, points, showProgress, argv.countByField, argv.groupByField, argv.sumField);
+if (!_.contains(keys, argv.longitude)) {
+	console.log('Please specify the correct longitude field.');
+	process.exit(0);
+}
 
-// create a new polygon GeoJSON file
-util.print('\nWriting to ' + argv.output + '...');
-fs.writeFileSync(argv.output, JSON.stringify(results.polygons, null, 4));
-util.print(' Done.\n');
+csv2geojson.csv2geojson(json, {
+	latfield: argv.latitude,
+	lonfield: argv.longitude,
+	delimiter: argv.delimiter
+}, function(err, points) {
 
-if (results.orphans.length) {
+	// tell pace how many elements we're going to process
+	var pace = require('pace')({
+		total: points.features.length,
+		itemType: 'points'
+	});
 
-	// now make orphans.geojson
-	var orphansJson = {
-		type: 'FeatureCollection',
-		features: results.orphans
-	};
+	function showProgress(elementsProcessed) {
+		pace.op(elementsProcessed);
+	}
 
-	var orphansFileName = 'orphans.geojson';
+	// batch away
+	var results = batchPointInPolygon.batch(polygons, points, showProgress, argv.countBy, argv.groupBy, argv.sumBy);
 
-	util.print('There are ' + numeral(results.orphans.length).format('0, 0') + ' points with no polygons. Writing to ' + orphansFileName + '...');
-	fs.writeFileSync(orphansFileName, JSON.stringify(orphansJson, null, 4));
+	// create a new polygon GeoJSON file
+	util.print('\nWriting to ' + argv.output + '...');
+	fs.writeFileSync(argv.output, JSON.stringify(results.polygons, null, 4));
 	util.print(' Done.\n');
 
-}
+	if (results.orphans.length) {
+
+		// now make orphans.geojson
+		var orphansJson = {
+			type: 'FeatureCollection',
+			features: results.orphans
+		};
+
+		var orphansFileName = 'orphans.geojson';
+
+		util.print('There are ' + numeral(results.orphans.length).format('0, 0') + ' points with no polygons. Writing to ' + orphansFileName + '...');
+		fs.writeFileSync(orphansFileName, JSON.stringify(orphansJson, null, 4));
+		util.print(' Done.\n');
+
+	}
+
+});
