@@ -90,8 +90,50 @@ address,color,value,latitude,longitude
 333 Point Lane,red,300,3,3
 ```
 
-Running `points2polygons --polygons town.geojson --points houses.csv` will place the houses in our town, and generate something like this:
+Running `points2polygons --polygons town.geojson --points houses.csv` will simply place the houses in our town, and generate something like this:
 
+```javascript
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Polygonville",
+                "points": [
+                    {
+                        "type": "Feature",
+                        "properties": {
+                            "address": "111 Point Lane",
+                            "color": "red",
+                            "value": "100"
+                        }
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [1,1]
+                        }
+                    },
+                    {
+                        "type": "Feature",
+                        "properties": {
+                            "address": "222 Point Lane",
+                            "color": "green",
+                            "value": "200"
+                        }
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [2,2]
+                        }
+                    },
+                    ...
+                ]
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [0,0],
+```
 
 ## Installation
 
