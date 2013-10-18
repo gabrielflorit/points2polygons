@@ -2,7 +2,7 @@
 points2polygons
 ===============
 
-Given a list of polygons and points, **points2polygons** will determine if each point is inside a polygon, using [point-in-polygon](https://github.com/substack/point-in-polygon).
+Given a list of polygons and points, `points2polygons` will determine if each point is inside a polygon, using [point-in-polygon](https://github.com/substack/point-in-polygon).
 
 If found, the point will be added to the polygon.
 
@@ -16,6 +16,7 @@ Given a list of polygons, `polygons.geojson`:
     "features": [
         {
             "type": "Feature",
+            "properties": { },
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -27,11 +28,11 @@ Given a list of polygons, `polygons.geojson`:
 and a list of points, `points.csv`:
 
 ```
-town,lat,lon
-Dreamland,1,1
+address,lat,lon
+111 Point Lane,1,1
 ```
 
-**points2polygons** will assign points to matching polygons, and generate a new GeoJSON file, `output.geojson`:
+`points2polygons` will assign points to matching polygons, and generate a new GeoJSON file, `output.geojson`:
 
 ```javascript
 {
@@ -44,7 +45,7 @@ Dreamland,1,1
                     {
                         "type": "Feature",
                         "properties": {
-                            "town": "Dreamland"
+                            "address": "111 Point Lane"
                         }
                         "geometry": {
                             "type": "Point",
@@ -62,6 +63,35 @@ Dreamland,1,1
 ```
 
 Points with no polygons will be placed in their own GeoJSON file, `orphans.geojson`.
+
+## Aggregation!
+
+`points2polygons` can perform sum and count aggregations. Let me explain. Say you have a `town.geojson`:
+
+```javascript
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Polygonville"
+    },
+    "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [0,0],
+```
+
+and `houses.csv`:
+
+```
+address,color,value,latitude,longitude
+111 Point Lane,red,100,1,1
+222 Point Lane,green,200,2,2
+333 Point Lane,red,300,3,3
+```
+
+Running `points2polygons --polygons town.geojson --points houses.csv` will place the houses in our town, and generate something like this:
+
 
 ## Installation
 
