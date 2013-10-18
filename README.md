@@ -2,7 +2,7 @@
 points2polygons
 ===============
 
-Given a list of polygons and points, points2polygons will determine if each point is inside a polygon, using [point-in-polygon](https://github.com/substack/point-in-polygon).
+Given a list of polygons and points, **points2polygons** will determine if each point is inside a polygon, using [point-in-polygon](https://github.com/substack/point-in-polygon).
 
 If found, the point will be added to the polygon.
 
@@ -26,24 +26,14 @@ Given a list of polygons, `polygons.geojson`:
                         ],...
 ```
 
-and a list of points, `points.geojson`:
+and a list of points, `points.csv`:
 
-```javascript
-{
-    "type": "FeatureCollection",
-    "features": [
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -71.057961,
-                    42.352929
-                ]
-            },...
+```
+town,lat,lon
+Boston,42.358431,-71.059773
 ```
 
-`batch-point-in-polygon` will assign points to matching polygons, and generate a new GeoJSON file, `output.geojson`:
+**points2polygons** will assign points to matching polygons, and generate a new GeoJSON file, `output.geojson`:
 
 ```javascript
 {
@@ -55,11 +45,14 @@ and a list of points, `points.geojson`:
                 "points": [
                     {
                         "type": "Feature",
+                        "properties": {
+                            "town": "Boston"
+                        }
                         "geometry": {
                             "type": "Point",
                             "coordinates": [
-                                -71.057961,
-                                42.352929
+                                -71.059773,
+                                42.358431
                             ]
                         }
                     }
@@ -83,7 +76,7 @@ Points with no polygons will be placed in their own GeoJSON file, `orphans.geojs
 
 ## Using it as a console utility
 
-    -> batch-point-in-polygon --polygons polygons.json --points points.json --output output.json
+    -> points2polygons --polygons polygons.json --points points.json --output output.json
 
 ## Using it as a library
 
