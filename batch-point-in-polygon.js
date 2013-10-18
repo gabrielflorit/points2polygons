@@ -1,7 +1,9 @@
 var inside = require('point-in-polygon');
 var _ = require('lodash');
 
-var batch = function(polygons, points, showProgress, countByField, groupByField, sumField) {
+var batch = function(_polygons, points, showProgress, countByField, groupByField, sumField) {
+
+	var polygons = _.cloneDeep(_polygons);
 
 	var insidePointsCount = 0;
 	var orphans = [];
