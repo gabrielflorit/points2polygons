@@ -137,7 +137,55 @@ Running `points2polygons --polygons town.geojson --points houses.csv` will corre
 
 But what I really want is a count of red and green houses in my town. In other words, I want to
 
-### aggregate by 
+### count
+
+by `color`. Use the `--count` param. Running `points2polygons --polygons town.geojson --points houses.csv --count color` generates something like this:
+
+```javascript
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Polygonville",
+                "green": 200,
+                "red": 400
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [0,0],
+```
+
+`properties` doesn't contain `points` anymore, only the aggregation result.
+
+Pretty incredible! But what I really want is a total of house values, by color. In other words, I want to
+
+### sum
+
+`value`, and group by `color`. Use the `--groupBy` and `--sum` params. Running `points2polygons --polygons town.geojson --points houses.csv --groupBy color --sum value` generates something like this:
+
+```javascript
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Polygonville",
+                "green": 1,
+                "red": 2
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [0,0],
+```
+
+**Pretty incredible!**
 
 ## Installation
 
