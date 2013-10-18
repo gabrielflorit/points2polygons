@@ -90,7 +90,7 @@ address,color,value,latitude,longitude
 333 Point Lane,red,300,3,3
 ```
 
-Running `points2polygons --polygons town.geojson --points houses.csv` will simply place the houses in our town, and generate something like this:
+Running `points2polygons --polygons town.geojson --points houses.csv` will correctly place the houses in our town, and generate something like this:
 
 ```javascript
 {
@@ -135,6 +135,10 @@ Running `points2polygons --polygons town.geojson --points houses.csv` will simpl
                         [0,0],
 ```
 
+But what I really want is a count of red and green houses in my town. In other words, I want to
+
+### aggregate by 
+
 ## Installation
 
     npm install points2polygons
@@ -147,29 +151,29 @@ Batch point-in-polygon operations. Creates a GeoJSON file of polygons containing
 Usage: points2polygons
 
 Options:
-  -y, --polygons   a GeoJSON file of polygons                       [required]
-  -t, --points     a CSV file of points                             [required]
-  -i, --latitude   latitude field                                   [default: "latitude"]
-  -e, --longitude  longitude field                                  [default: "longitude"]
-  -d, --delimiter  delimiter character                              [default: ","]
-  -o, --output     a GeoJSON file of polygons containing points     [default: "output.json"]
-  -c, --countBy    aggregate points by count - group by this field  [default: null]
-  -g, --groupBy    aggregate points by sum - group by this field    [default: null]
-  -s, --sumBy      aggregate points by sum - sum by this field      [default: null]
+  -y, --polygons   a GeoJSON file of polygons                        [required]
+  -t, --points     a CSV file of points                              [required]
+  -i, --latitude   latitude field                                    [default: "latitude"]
+  -e, --longitude  longitude field                                   [default: "longitude"]
+  -d, --delimiter  delimiter character                               [default: ","]
+  -o, --output     a GeoJSON file of polygons containing points      [default: "output.json"]
+  -c, --count      aggregate points and count - group by this field  [default: null]
+  -g, --groupBy    aggregate points and sum - group by this field    [default: null]
+  -s, --sum        aggregate points and sum - sum this field         [default: null]
 ```
 
 ## Using it as a library
 
     require('points2polygons')
 
-### .batch(polygons, points, showProgress, countBy, groupBy, sumBy)
+### .batch(polygons, points, showProgress, count, groupBy, sum)
 
 * `polygons`: (required) a GeoJSON object of polygons.
 * `points`: (required) a GeoJSON object of points.
 * `showProgress`: (optional) a callback that gets fired per point processed, and receives the current point index.
-* `countBy`: (optional) if provided, will aggregate points by count for this field. See example.
-* `groupBy`: (optional) if provided, will aggregate points by sum, grouping by this field. See example.
-* `sumBy`: (optional) if provided, will aggregate points by sum, summing by this field. See example.
+* `count`: (optional) if provided, will aggregate points and count this field. See example.
+* `groupBy`: (optional) if provided, will aggregate points and sum, grouping by this field. See example.
+* `sum`: (optional) if provided, will aggregate points and sum, summing by this field. See example.
  
 Returns an object with two properties:
 
