@@ -110,3 +110,8 @@ Returns an object with two properties:
 
 * `polygons`: same as input, but each polygon has a `points` property containing corresponding points.
 * `orphans`: a GeoJSON object containing points with no polygons.
+
+## See also
+
+* [point-in-polygon](https://github.com/substack/point-in-polygon): determine if a point is inside a polygon.
+* [csv2geojson](https://github.com/mapbox/csv2geojson): magically convert csv files to geojson files.
