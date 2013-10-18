@@ -5,6 +5,7 @@ var optimist = require('optimist');
 var numeral = require('numeral');
 var util = require('util');
 var batchPointInPolygon = require('../batch-point-in-polygon.js');
+var d3 = require('d3');
 
 var argv = optimist
 	.usage('Batch point-in-polygon operations. Creates a GeoJSON file of polygons containing points.\nUsage: $0')
@@ -16,7 +17,7 @@ var argv = optimist
 	.options('t', {
 		demand: true,
 		alias: 'points',
-		describe: 'a GeoJSON file of points'
+		describe: 'a CSV file of points'
 	})
 	.options('o', {
 		demand: false,
@@ -48,7 +49,7 @@ var polygonsFile = fs.readFileSync(argv.polygons, 'utf8');
 var pointsFile = fs.readFileSync(argv.points, 'utf8');
 
 var polygons = JSON.parse(polygonsFile);
-var points = JSON.parse(pointsFile);
+var points = d3.csv.parse(pointsFile);
 
 // tell pace how many elements we're going to process
 var pace = require('pace')({
