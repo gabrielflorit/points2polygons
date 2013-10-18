@@ -116,6 +116,66 @@ var points = {
 				"type": "Point",
 				"coordinates": [5.5,1.5]
 			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "five",
+				"color": "green",
+				"amount": 100
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [1.5,3.5]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "six",
+				"color": "green",
+				"amount": 200
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [2.5,3.5]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "seven",
+				"color": "green",
+				"amount": 300
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [3.5,3.5]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "eight",
+				"color": "red",
+				"amount": 400
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [4.5,3.5]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "nine",
+				"color": "red",
+				"amount": 500
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [5.5,3.5]
+			}
 		}
 	]
 };
@@ -126,31 +186,27 @@ var pip = require('../batch-point-in-polygon.js');
 
 describe('#batch-point-in-polygon()', function() {
 
-	it('should place point one inside polygon zero', function() {
+	it('should place inside points inside polygons correctly', function() {
 		var result = pip.batch(polygons, points);
-		assert.deepEqual(result.polygons.features[0].properties.points, [points.features[1]]);
+		assert.deepEqual(result.polygons.features[0].properties.points, [points.features[1], points.features[6]]);
+		assert.deepEqual(result.polygons.features[1].properties.points, [points.features[3], points.features[8]]);
 	});
 
-	it('should place point three inside polygon one', function() {
+	it('should place outside points in array of orphans', function() {
 		var result = pip.batch(polygons, points);
-		assert.deepEqual(result.polygons.features[1].properties.points, [points.features[3]]);
-	});
-
-	it('should place points zero, two and four in array of orphans', function() {
-		var result = pip.batch(polygons, points);
-		assert.deepEqual(result.orphans, [points.features[0], points.features[2], points.features[4]]);
+		assert.deepEqual(result.orphans, [points.features[0], points.features[2], points.features[4], points.features[5], points.features[7], points.features[9]]);
 	});
 
 	it('counting by color should total up color counts', function() {
 		var result = pip.batch(polygons, points, null, 'color');
-		assert.deepEqual(result.polygons.features[0].properties['green'], 1);
-		assert.deepEqual(result.polygons.features[1].properties['red'], 1);
+		assert.deepEqual(result.polygons.features[0].properties['green'], 2);
+		assert.deepEqual(result.polygons.features[1].properties['red'], 2);
 	});
 
 	it('grouping by color and amount should total up color amounts', function() {
 		var result = pip.batch(polygons, points, null, null, 'color', 'amount');
-		assert.deepEqual(result.polygons.features[0].properties['green'], 200);
-		assert.deepEqual(result.polygons.features[1].properties['red'], 400);
+		assert.deepEqual(result.polygons.features[0].properties['green'], 400);
+		assert.deepEqual(result.polygons.features[1].properties['red'], 800);
 	});
 
 });
