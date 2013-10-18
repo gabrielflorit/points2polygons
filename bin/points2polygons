@@ -47,21 +47,21 @@ var argv = optimist
 	})
 	.options('c', {
 		demand: false,
-		alias: 'countBy',
+		alias: 'count',
 		default: null,
-		describe: 'aggregate points by count - group by this field'
+		describe: 'aggregate points and count - group by this field'
 	})
 	.options('g', {
 		demand: false,
 		alias: 'groupBy',
 		default: null,
-		describe: 'aggregate points by sum - group by this field'
+		describe: 'aggregate points and sum - group by this field'
 	})
 	.options('s', {
 		demand: false,
-		alias: 'sumBy',
+		alias: 'sum',
 		default: null,
-		describe: 'aggregate points by sum - sum by this field'
+		describe: 'aggregate points and sum - sum by this field'
 	})
 	.argv;
 
@@ -100,7 +100,7 @@ csv2geojson.csv2geojson(json, {
 		pace.op(elementsProcessed);
 	}
 
-	var results = points2polygons.batch(polygons, points, showProgress, argv.countBy, argv.groupBy, argv.sumBy);
+	var results = points2polygons.batch(polygons, points, showProgress, argv.count, argv.groupBy, argv.sum);
 
 	// create a new polygon GeoJSON file
 	util.print('\nWriting to ' + argv.output + '...');
