@@ -101,6 +101,7 @@ Running `points2polygons --polygons town.geojson --points houses.csv` will corre
             "properties": {
                 "name": "Polygonville",
                 "points": [
+                    // a house
                     {
                         "type": "Feature",
                         "properties": {
@@ -113,6 +114,7 @@ Running `points2polygons --polygons town.geojson --points houses.csv` will corre
                             "coordinates": [1,1]
                         }
                     },
+                    // another house
                     {
                         "type": "Feature",
                         "properties": {
@@ -149,8 +151,8 @@ by `color`. Use the `--count` param. Running `points2polygons --polygons town.ge
             "type": "Feature",
             "properties": {
                 "name": "Polygonville",
-                "green": 200,
-                "red": 400
+                "green": 1, // there is one green house in the town
+                "red": 2 // there are two red houses in the town
             },
             "geometry": {
                 "type": "Polygon",
@@ -175,8 +177,8 @@ Pretty incredible! But what I really want is a total of house values, by color. 
             "type": "Feature",
             "properties": {
                 "name": "Polygonville",
-                "green": 1,
-                "red": 2
+                "green": 200, // this town's green houses are worth a total of 200
+                "red": 400 // this towns's red houses are worth a total of 400
             },
             "geometry": {
                 "type": "Polygon",
@@ -219,9 +221,9 @@ Options:
 * `polygons`: (required) a GeoJSON object of polygons.
 * `points`: (required) a GeoJSON object of points.
 * `showProgress`: (optional) a callback that gets fired per point processed, and receives the current point index.
-* `count`: (optional) if provided, will aggregate points and count this field. See example.
-* `groupBy`: (optional) if provided, will aggregate points and sum, grouping by this field. See example.
-* `sum`: (optional) if provided, will aggregate points and sum, summing by this field. See example.
+* `count`: (optional) if provided, will aggregate points and count this field. [See example](https://github.com/gabrielflorit/points2polygons/edit/master/README.md#count).
+* `groupBy`: (optional) if provided, will aggregate points and sum, grouping by this field. [See example](https://github.com/gabrielflorit/points2polygons/edit/master/README.md#sum).
+* `sum`: (optional) if provided, will aggregate points and sum, summing by this field. [See example](https://github.com/gabrielflorit/points2polygons/edit/master/README.md#sum).
  
 Returns an object with two properties:
 
