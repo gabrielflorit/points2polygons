@@ -3,7 +3,7 @@ var _ = require('lodash');
 
 var batch = function(_polygons, _points, showProgress, _count, _groupBy, _sum) {
 
-	var polygons = _.cloneDeep(_polygons);
+	var polygons = JSON.parse(JSON.stringify(_polygons));
 
 	var insidePointsCount = 0;
 	var orphans = [];

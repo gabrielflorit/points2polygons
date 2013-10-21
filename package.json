@@ -1,6 +1,6 @@
 {
   "name": "points2polygons",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Batch point-in-polygon operations on GeoJSON files.",
   "main": "points2polygons.js",
   "repository": "https://github.com/gabrielflorit/points2polygons.git",
