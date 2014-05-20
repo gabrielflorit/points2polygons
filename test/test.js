@@ -197,10 +197,14 @@ describe('#points2polygons()', function() {
 		assert.deepEqual(result.orphans, [points.features[0], points.features[2], points.features[4], points.features[5], points.features[7], points.features[9]]);
 	});
 
-	it('counting by color should total up color counts', function() {
+	it('counting by default should total up number of points', function() {
 		var result = points2polygons.batch(polygons, points, null, 'color');
-		assert.deepEqual(result.polygons.features[0].properties['green'], 2);
-		assert.deepEqual(result.polygons.features[1].properties['red'], 2);
+	});
+
+	it('counting by color should total up color counts', function() {
+		var result = points2polygons.batch(polygons, points, null, true);
+		assert.deepEqual(result.polygons.features[0].properties['points'], 2);
+		assert.deepEqual(result.polygons.features[1].properties['points'], 2);
 	});
 
 	it('grouping by color and amount should total up color amounts', function() {

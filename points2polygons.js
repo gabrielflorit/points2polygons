@@ -84,6 +84,12 @@ var batch = function(_polygons, _points, showProgress, _count, _groupBy, _sum) {
 			var points = polygon.properties.points;
 			if (points) {
 
+				if (typeof _count === 'boolean') {
+
+					polygon.properties.points = points.length;
+
+				} else {
+
 				var properties = _(points)
 					.pluck('properties')
 					.map(function(v, i) {
@@ -106,6 +112,8 @@ var batch = function(_polygons, _points, showProgress, _count, _groupBy, _sum) {
 				_.assign(polygon.properties, properties);
 
 				delete polygon.properties.points;
+
+				}
 
 			}
 
