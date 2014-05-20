@@ -90,28 +90,28 @@ var batch = function(_polygons, _points, showProgress, _count, _groupBy, _sum) {
 
 				} else {
 
-				var properties = _(points)
-					.pluck('properties')
-					.map(function(v, i) {
+					var properties = _(points)
+						.pluck('properties')
+						.map(function(v, i) {
 
-						var items = _(v)
-						.filter(function(v, i) {
-							return i.toLowerCase() == _count.toLowerCase();
+							var items = _(v)
+							.filter(function(v, i) {
+								return i.toLowerCase() == _count.toLowerCase();
+							})
+							.value();
+
+							return items;
+
+						})
+						.flatten()
+						.countBy(function(v, i) {
+							return v;
 						})
 						.value();
 
-						return items;
+					_.assign(polygon.properties, properties);
 
-					})
-					.flatten()
-					.countBy(function(v, i) {
-						return v;
-					})
-					.value();
-
-				_.assign(polygon.properties, properties);
-
-				delete polygon.properties.points;
+					delete polygon.properties.points;
 
 				}
 
