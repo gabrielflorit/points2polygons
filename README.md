@@ -161,7 +161,7 @@ by `color`. Use the `--count` param. Running `points2polygons --polygons town.ge
                         [0,0],
 ```
 
-`properties` doesn't contain `points` anymore, only the aggregation result.
+`properties` doesn't contain `points` anymore, only the aggregation result. Pass an empty `--count` param to get a simple count.
 
 Pretty incredible! But what I really want is a total of house values, by color. In other words, I want to
 
